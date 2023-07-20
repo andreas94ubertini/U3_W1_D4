@@ -5,11 +5,11 @@ class Clothing {
     }
 
     get saldocapo(): number {
-        return this.saldo
+        return (this.prezzoivainclusa * this.saldo)/100
     }
 
    get acquistocapo(): number {
-        return this.prezzoivainclusa
+        return this.prezzoivainclusa - this.saldocapo
     }
 }
 const url:string = './starter/Abbigliamento.json'
@@ -49,8 +49,8 @@ const write =  (cloth:Clothing):void=>{
 //         console.log(err)
 //     })
 const getCloths = async function(url:string):Promise <void>{
-    let cloths = await fetch(url).then((res:Response): Promise<any> =>res.json())
-    cloths.forEach((cloth: Clothing): void => {
+    let clothes = await fetch(url).then((res:Response): Promise<any> =>res.json())
+    clothes.forEach((cloth: Clothing): void => {
              let capo: Clothing = new Clothing(cloth.id, cloth.codprod, cloth.collezione, cloth.capo, cloth.modello, cloth.quantita, cloth.colore, cloth.prezzoivaesclusa, cloth.prezzoivainclusa, cloth.disponibile, cloth.saldo)
               avalaibleCloths.push(capo)
         write(cloth)
@@ -60,7 +60,7 @@ const getCloths = async function(url:string):Promise <void>{
     allBtns.forEach((btn:Element,i:number):void=>{
         btn.addEventListener('click', function (){
             console.log(avalaibleCloths[i].saldocapo, 'saldo da scalare')
-            console.log(avalaibleCloths[i].acquistocapo, 'costo iva inclusa')
+            console.log(avalaibleCloths[i].acquistocapo, 'costo dopo lo sconto')
         })
     })
 }
